@@ -27,3 +27,7 @@ repositories:
     type: git
     url: https://github.com/J-Schaefer/dagap.git
     version: add-giskard-support
+  giskardpy:
+    type: git
+    url: https://github.com/SemRoCo/giskardpy.git
+    version: devel
