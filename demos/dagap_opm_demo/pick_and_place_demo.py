@@ -12,7 +12,7 @@ import dagap.utils.tfwrapper as dagap_tf
 
 # PyCRAM Imports
 from pycram.process_module import simulated_robot, real_robot
-from pycram.designators.action_designator import *
+from pycram.designators.action_designator import *  # includes import typing
 from pycram.designators.specialized_designators.action.dual_arm_pickup_action import DualArmPickupAction
 from pycram.datastructures.enums import Arms, ObjectType, Grasp
 from pycram.designators.object_designator import *
@@ -165,11 +165,11 @@ class PickAndPlaceDemo:
 
         giskardpy.sync_worlds()
 
-        self.world.add_vis_axis(self.bowl.get_pose())
-        self.world.add_vis_axis(self.breakfast_cereal.get_pose())
-        self.world.add_vis_axis(self.cup.get_pose())
-        self.world.add_vis_axis(self.spoon.get_pose())
-        self.world.add_vis_axis(self.milk.get_pose())
+        # self.world.add_vis_axis(self.bowl.get_pose())
+        # self.world.add_vis_axis(self.breakfast_cereal.get_pose())
+        # self.world.add_vis_axis(self.cup.get_pose())
+        # self.world.add_vis_axis(self.spoon.get_pose())
+        # self.world.add_vis_axis(self.milk.get_pose())
 
         # Test out an example transform to catch exceptions early
         if dagap_tf.lookup_transform(f"SIMULATED/{self.kitchen.get_link_tf_frame('sink_area_surface')}",
@@ -310,8 +310,8 @@ class PickAndPlaceDemo:
                 try:
                     if self.use_dual_arm:
                         rospy.loginfo(f"Picking up {next_object_name}")
-                        self.world.add_vis_axis(self.pr2.get_link_pose("r_gripper_tool_frame"))
-                        self.world.add_vis_axis(self.pr2.get_link_pose("l_gripper_tool_frame"))
+                        # self.world.add_vis_axis(self.pr2.get_link_pose("r_gripper_tool_frame"))
+                        # self.world.add_vis_axis(self.pr2.get_link_pose("l_gripper_tool_frame"))
                         first_pickup = DualArmPickupAction(object_designator_description=next_object_desig,
                                                            grasps=[Grasp.FRONT]
                                                            ).resolve()
@@ -357,7 +357,7 @@ class PickAndPlaceDemo:
                 # self.world.add_vis_axis(kitchen_island_surface_frame)
 
                 next_placing_pose = self.get_placing_pose_from_name(next_object_name)
-                self.world.add_vis_axis(next_placing_pose)
+                # self.world.add_vis_axis(next_placing_pose)
 
                 # Get position to stand while placing the object
                 place_stand = CostmapLocation(target=next_placing_pose,
@@ -375,3 +375,6 @@ class PickAndPlaceDemo:
                 ParkArmsAction([Arms.BOTH]).resolve().perform()
 
                 # self.world.remove_vis_axis()  # Remove visualizations
+
+    def cleanup(self):
+        self.world.exit()  # Exit the bullet world
