@@ -25,5 +25,7 @@ if __name__ == "__main__":
 
     Demo = PickAndPlaceDemo(use_dual_arm=use_dual_arm, use_opm=use_opm)  # init demo and spawn objects
 
+    rospy.sleep(30)
+
     Demo.run()  # run demo
     rospy.loginfo("Finishing demo.")

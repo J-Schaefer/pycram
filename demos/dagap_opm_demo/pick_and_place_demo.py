@@ -163,7 +163,7 @@ class PickAndPlaceDemo:
         self.query_object_list_map[5].object_frame =\
             f"simulated/{self.milk.tf_frame}"
 
-        giskardpy.sync_worlds()
+        # giskardpy.sync_worlds()
 
         # self.world.add_vis_axis(self.bowl.get_pose())
         # self.world.add_vis_axis(self.breakfast_cereal.get_pose())
@@ -264,7 +264,7 @@ class PickAndPlaceDemo:
         except rospy.ServiceException as e:
             print("Service call failed: %s" % e)
 
-    def run(self):
+    def run(self) -> List[str]:
         """
         Run the pick and place demo.
         """
@@ -276,6 +276,8 @@ class PickAndPlaceDemo:
                             param_value="pr2")
 
             object_list = self.query_object_list_map
+            final_object_list = []
+            final_placing_poses = []
 
             while len(object_list) > 1:
 
@@ -296,8 +298,10 @@ class PickAndPlaceDemo:
                 next_object_desig: ObjectDesignatorDescription = self.get_designator_from_name(next_object_name)
 
                 # Remove current object from list for next iteration
+                element: OPMObjectQuery
                 for element in list(object_list):
                     if element.Object == next_object_name:
+                        final_object_list.append(f"{element.Object}: [{element.object_location.position.x}, {element.object_location.position.y}, {element.object_location.position.z}] in {element.object_location.frame}")
                         object_list.remove(element)
 
                 pickup_pose = CostmapLocation(target=next_object_desig.resolve(),
@@ -357,6 +361,7 @@ class PickAndPlaceDemo:
                 # self.world.add_vis_axis(kitchen_island_surface_frame)
 
                 next_placing_pose = self.get_placing_pose_from_name(next_object_name)
+                final_placing_poses.append(f"{next_object_name}: [{next_placing_pose.position.x}, {next_placing_pose.position.y}, {next_placing_pose.position.z}] in {next_placing_pose.frame}")
                 # self.world.add_vis_axis(next_placing_pose)
 
                 # Get position to stand while placing the object
@@ -375,6 +380,7 @@ class PickAndPlaceDemo:
                 ParkArmsAction([Arms.BOTH]).resolve().perform()
 
                 # self.world.remove_vis_axis()  # Remove visualizations
+            return final_object_list, final_placing_poses
 
     def cleanup(self):
         self.world.exit()  # Exit the bullet world
