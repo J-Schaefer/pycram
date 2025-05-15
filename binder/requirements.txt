@@ -16,3 +16,4 @@ tqdm==4.66.3
 psutil==5.9.7
 lxml==4.9.1
 rdflib==7.0.0
+pydot==1.4.1
