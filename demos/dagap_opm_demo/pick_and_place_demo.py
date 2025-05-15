@@ -22,6 +22,7 @@ from pycram.designator import ObjectDesignatorDescription
 from pycram.datastructures.pose import Pose
 from pycram.plan_failures import IKError
 from pycram.local_transformer import LocalTransformer
+from pycram.ros.viz_marker_publisher import VizMarkerPublisher
 
 import pycram.external_interfaces.giskard as giskardpy
 
@@ -39,8 +40,10 @@ class PickAndPlaceDemo:
         self.use_opm = use_opm  # use OPM service
 
         # Set up the bullet world
-        self.world = BulletWorld(WorldMode.GUI)
+        self.world = BulletWorld(WorldMode.DIRECT)
         self.world.set_gravity([0, 0, -9.8])
+
+        VizMarkerPublisher()
 
         self.tfbroadcaster = TFBroadcaster()
         self.local_transformer = LocalTransformer()  # PyCRAM tf transformer

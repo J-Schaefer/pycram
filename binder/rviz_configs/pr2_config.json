@@ -27,7 +27,7 @@
       }
     }
   },
-  "sidebarOpened": false,
+  "sidebarOpened": true,
   "displays": [
     {
       "isShown": true,
@@ -57,8 +57,7 @@
       },
       "type": "urdf"
     },
-     
-      {
+    {
       "isShown": true,
       "name": "Marker array",
       "options": {
@@ -66,7 +65,5 @@
       },
       "type": "markerArray"
     }
-
-  
   ]
 }
